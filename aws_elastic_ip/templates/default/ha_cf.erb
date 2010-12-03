@@ -1,0 +1,6 @@
+logfacility local0
+node <%= @primary['hostname'] %> <%= @secondary['hostname'] %>
+keepalive 1
+deadtime 10
+ucast eth0 <%= @peer_node['ipaddress'] %>
+auto_failback no

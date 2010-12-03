@@ -1,0 +1,69 @@
+#!/usr/bin/ruby
+
+require 'rubygems'
+require 'right_aws'
+require 'tmail'
+require 'net/smtp'
+
+EMAIL_TO = "<%= @node[:aws_elastic_ip][:email_to] %>"
+EMAIL_FROM = "<%= @node[:aws_elastic_ip][:email_from] %>"
+EMAIL_HOST = "localhost"
+
+def send_email(instance_id, elastic_ip, info)
+  to = EMAIL_TO
+  from = EMAIL_FROM
+  host = EMAIL_HOST
+  mail = TMail::Mail.new
+  mail.to = to
+  mail.from = from
+  mail.subject = "ALERT :: elastic ip failover :: #{instance_id} / #{elastic_ip}"
+  mail.date = Time.now
+  mail.mime_version = '1.0'
+  mail.body = info
+
+  Net::SMTP.start( host ) do |smtp|
+    smtp.send_message(
+      mail.to_s,
+      from,
+      to
+    )
+  end
+end
+
+def main
+  if ARGV.length != 5
+    puts "ec2_elastic_ip usage:\n# ec2_elastic_ip CONFIG OPERATION"
+  else
+    begin
+      aws_access_key_id = ARGV[0]
+      aws_secret_access_key = ARGV[1]
+      instance_id = ARGV[2]
+      elastic_ip = ARGV[3]
+      operation = ARGV[4]
+
+      ec2 = RightAws::Ec2.new(aws_access_key_id,aws_secret_access_key)
+
+      if operation == "associate"
+        ec2.associate_address(instance_id, elastic_ip)
+        info = "associated #{elastic_ip} with #{instance_id}"
+        send_email(instance_id, elastic_ip, info)
+      elsif operation == "disassociate"
+        ec2.disassociate_address(elastic_ip)
+        info = "disassociated #{elastic_ip}"
+        send_email(instance_id, elastic_ip, info)
+      elsif operation == "status"
+        if ec2.describe_addresses(elastic_ip)[0][:instance_id] == instance_id
+          puts "OK"
+        else
+          puts "FAIL"
+        end
+      end
+    rescue Exception => e
+      info = "issues with elastic ip address for #{instance_id} and #{elastic_ip}\n\n#{e}"
+      send_email(instance_id, elastic_ip, info)
+    end
+  end
+end
+
+main
+

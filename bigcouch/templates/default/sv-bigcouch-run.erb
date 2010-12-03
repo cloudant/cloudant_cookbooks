@@ -1,0 +1,4 @@
+#!/bin/bash
+exec 2>&1
+export HOME=/home/bigcouch
+exec chpst -u bigcouch /opt/bigcouch/bin/bigcouch
