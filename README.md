@@ -16,6 +16,7 @@
   * Edit solo.rb to point to the cloned repo
   * Run the following to install and configure bigcouch
     
+    mkdir /tmp/chef-solo
     sudo chef-solo -c /path/to/solo.rb -j /path/to/bigcouch.json
 
 ### Usage w/ Chef Client
