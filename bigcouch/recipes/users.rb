@@ -1,13 +1,12 @@
-user "bigcouch" do
-  uid 400
-  shell "/bin/bash"
-  home "/home/bigcouch"
+group "bigcouch" do
+  gid 400
 end
 
-directory "/home/bigcouch" do
-  owner "bigcouch"
-  group "bigcouch"
-  mode 0700
+user "bigcouch" do
+  uid 400
+  gid 400
+  shell "/bin/bash"
+  home "/home/bigcouch"
 end
 
 template "/home/bigcouch/.erlang.cookie" do
