@@ -14,21 +14,23 @@ directory node[:bigcouch][:view_index_dir] do
   mode "0755"
 end
 
-if node[:kernel][:machine] == "x86_64"
-  build = "amd64"
-elsif node[:kernel][:machine] = "i686" || node[:kernel][:machine] == "i386"
-  build = "i386"
-end
-
 case node[:platform]
 when "ubuntu"
   package "libcurl4-openssl-dev"
+  
+  if node[:kernel][:machine] == "x86_64"
+    build = "amd64"
+  elsif node[:kernel][:machine] = "i686" || node[:kernel][:machine] == "i386"
+    build = "i386"
+  end
+  
   package = "deb"
 when "centos","redhat"
   %w{openssl openssl-devel}.each do |openssl|
     package openssl
   end
   package = "rpm"
+  build = node[:kernel][:machine]
 end
   
 bigcouch_pkg_path = File.join(Chef::Config[:file_cache_path], "/", "bigcouch_#{node[:bigcouch][:version]}_#{build}.#{package}")
@@ -47,7 +49,7 @@ when "ubuntu"
   end
 
 when "centos","redhat"
-  rpm_package(bigcouch_pkg_path) do
+  package(bigcouch_pkg_path) do
     source bigcouch_pkg_path
     action :install
     not_if "/usr/bin/test -d /opt/bigcouch"

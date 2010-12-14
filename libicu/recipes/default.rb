@@ -45,7 +45,7 @@ when "ubuntu"
   end
 
 when "centos","redhat"
-  %w{libicu libicu-devel}.do each |icu|
+  %w{libicu libicu-devel}.each do |icu|
    package icu
   end
  
