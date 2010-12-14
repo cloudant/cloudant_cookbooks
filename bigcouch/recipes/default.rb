@@ -1,49 +1,66 @@
-include_recipe "libicu42"
-include_recipe "libmozjs_1.9.2"
+include_recipe "libicu"
+include_recipe "spidermonkey"
 include_recipe "bigcouch::users"
 
-package "libcurl4-openssl-dev"
-
-
-directory "/srv/db" do
+directory node[:bigcouch][:database_dir] do
+  owner "bigcouch"
+  group "bigcouch"
+  mode "0755"
+end
+ 
+directory node[:bigcouch][:view_index_dir] do
   owner "bigcouch"
   group "bigcouch"
   mode "0755"
 end
 
-directory "/srv/view_index" do
-  owner "bigcouch"
-  group "bigcouch"
-  mode "0755"
+if node[:kernel][:machine] == "x86_64"
+  build = "amd64"
+elsif node[:kernel][:machine] = "i686" || node[:kernel][:machine] == "i386"
+  build = "i386"
 end
 
-tarball = "bigcouch-#{node[:bigcouch][:version]}-ubuntu-#{node[:kernel][:machine]}.tar.gz"
+case node[:platform]
+when "ubuntu"
+  package "libcurl4-openssl-dev"
+  package = "deb"
+when "centos","redhat"
+  %w{openssl openssl-devel}.each do |openssl|
+    package openssl
+  end
+  package = "rpm"
+end
+  
+bigcouch_pkg_path = File.join(Chef::Config[:file_cache_path], "/", "bigcouch_#{node[:bigcouch][:version]}_#{build}.#{package}")
 
-remote_file "/tmp/#{tarball}" do
-  source "#{node[:bigcouch][:repo_url]}/#{tarball}"
-  mode 0644
-  owner "bigcouch"
-  group "bigcouch"
+remote_file(bigcouch_pkg_path) do
+  source "#{node[:bigcouch][:repo_url]}/bigcouch_#{node[:bigcouch][:version]}_#{build}.#{package}"
   not_if "/usr/bin/test -d /opt/bigcouch"
 end
 
-bash "install bigcouch release" do
-  user "root"
-  cwd "/opt"
-  code <<-EOH
-  (tar zxf /tmp/#{tarball} -C /opt)
-  (chown -R bigcouch:bigcouch /opt/bigcouch)
-  EOH
-  not_if "/usr/bin/test -d /opt/bigcouch"
-end
+case node[:platform]
+when "ubuntu"
+  dpkg_package(bigcouch_pkg_path) do
+    source bigcouch_pkg_path
+    action :install
+    not_if "/usr/bin/test -d /opt/bigcouch"
+  end
 
+when "centos","redhat"
+  rpm_package(bigcouch_pkg_path) do
+    source bigcouch_pkg_path
+    action :install
+    not_if "/usr/bin/test -d /opt/bigcouch"
+  end
+end
+ 
 template "/opt/bigcouch/etc/default.ini" do
   source "default_ini.erb"
   owner "bigcouch"
   group "bigcouch"
   mode 0644
 end
-
+ 
 template "/opt/bigcouch/etc/vm.args" do
   source "vm_args.erb"
   owner "bigcouch"
@@ -51,6 +68,8 @@ template "/opt/bigcouch/etc/vm.args" do
   mode 0644
 end
 
-# setup runit service
-include_recipe "runit"
-runit_service "bigcouch"
+case node[:platform]
+when "ubuntu"
+  include_recipe "runit"
+  runit_service "bigcouch"
+end

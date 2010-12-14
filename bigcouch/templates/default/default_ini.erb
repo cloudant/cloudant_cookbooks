@@ -1,6 +1,6 @@
 [couchdb]
-database_dir = /opt/bigcouch/var/lib
-view_index_dir = /opt/bigcouch/var/lib
+database_dir = <%= @node[:bigcouch][:database_dir] %>
+view_index_dir = <%= @node[:bigcouch][:view_index_dir] %>
 max_document_size = 67108864
 os_process_timeout = 5000
 max_dbs_open = 500
