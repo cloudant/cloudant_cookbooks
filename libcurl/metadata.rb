@@ -1,6 +1,6 @@
 maintainer        "Cloudant - Joe Williams"
 maintainer_email  "joe@cloudant.com"
-license           "Proprietary - All Rights Reserved"
+license           "Apache 2.0"
 description       "Configures libcurl"
 version           "0.1"
 long_description  "Configures libcurl"
