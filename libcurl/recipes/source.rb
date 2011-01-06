@@ -10,5 +10,5 @@ bash "install libcurl" do
   (cd /tmp/curl-7.21.1; ./configure && make && make install)
   (rm -rf /tmp/curl-7.21.1)
   EOH
-  only_if {::File.exists?("/usr/bin/curl")}
+  only_if {::File.exists?("/usr/local/bin/curl")}
 end
