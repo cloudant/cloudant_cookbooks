@@ -28,5 +28,5 @@
   
   * Redhat/Centos doesn't include an init script, we recommend using runit or daemontools.
   * If installing the RPM packages on Redhat/Centos run the following to turn off signed package checking.
-  
+
     sed -i 's/gpgcheck=1/gpgcheck=0/' /etc/yum.conf
