@@ -31,3 +31,7 @@
   * If installing the RPM packages on Redhat/Centos run the following to turn off signed package checking.
 
     sed -i 's/gpgcheck=1/gpgcheck=0/' /etc/yum.conf
+    
+### Getting Help
+
+  * IRC: #cloudant on freenode
