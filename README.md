@@ -19,7 +19,7 @@
     mkdir /tmp/chef-solo # or another path if you changed file_cache_path
     sudo chef-solo -c /path/to/solo.rb -j /path/to/bigcouch.json
 
-### Usage w/ Chef Client
+#### Usage w/ Chef Client
 
   * Upload the cookbooks in this repo to your Chef server using knife
   * Add the cookbooks to your nodes
