@@ -6,7 +6,7 @@
 ### Assumptions
   
   * You already have a working installation of chef (client or solo) to apply the cookbooks
-  * You are running Ubuntu (we use 10.04 LTS), we will likely support other distros soon
+  * You are running Ubuntu (we use 10.04 LTS) or Centos/RHEL 5
 
 ### Getting Started
 
