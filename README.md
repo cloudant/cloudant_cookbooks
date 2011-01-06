@@ -17,6 +17,7 @@
   * Run the following to install and configure bigcouch
     
     mkdir /tmp/chef-solo # or another path if you changed file_cache_path
+    
     sudo chef-solo -c /path/to/solo.rb -j /path/to/bigcouch.json
 
 #### Usage w/ Chef Client
