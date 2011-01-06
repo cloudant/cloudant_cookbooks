@@ -1,6 +1,5 @@
 include_recipe "libicu"
 include_recipe "spidermonkey"
-include_recipe "bigcouch::users"
 
 directory node[:bigcouch][:database_dir] do
   owner "bigcouch"
@@ -55,6 +54,13 @@ when "centos","redhat"
     action :install
     not_if "/usr/bin/test -d /opt/bigcouch"
   end
+end
+
+template "/home/bigcouch/.erlang.cookie" do
+  source "erlang_cookie.erb"
+  mode 0400
+  owner "bigcouch"
+  group "bigcouch"
 end
  
 template "/opt/bigcouch/etc/default.ini" do
