@@ -16,6 +16,7 @@ end
 case node[:platform]
 when "ubuntu"
   package "libcurl4-openssl-dev"
+  include_recipe "runit"
   
   if node[:kernel][:machine] == "x86_64"
     build = "amd64"
@@ -79,6 +80,5 @@ end
 
 case node[:platform]
 when "ubuntu"
-  include_recipe "runit"
   runit_service "bigcouch"
 end
