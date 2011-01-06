@@ -1,18 +1,6 @@
 include_recipe "libicu"
 include_recipe "spidermonkey"
 
-directory node[:bigcouch][:database_dir] do
-  owner "bigcouch"
-  group "bigcouch"
-  mode "0755"
-end
- 
-directory node[:bigcouch][:view_index_dir] do
-  owner "bigcouch"
-  group "bigcouch"
-  mode "0755"
-end
-
 case node[:platform]
 when "ubuntu"
   package "libcurl4-openssl-dev"
@@ -55,6 +43,18 @@ when "centos","redhat"
     action :install
     not_if "/usr/bin/test -d /opt/bigcouch"
   end
+end
+
+directory node[:bigcouch][:database_dir] do
+  owner "bigcouch"
+  group "bigcouch"
+  mode "0755"
+end
+ 
+directory node[:bigcouch][:view_index_dir] do
+  owner "bigcouch"
+  group "bigcouch"
+  mode "0755"
 end
 
 template "/home/bigcouch/.erlang.cookie" do
