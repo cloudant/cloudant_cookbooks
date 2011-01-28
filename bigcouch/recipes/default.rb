@@ -3,7 +3,6 @@ include_recipe "spidermonkey"
 
 case node[:platform]
 when "ubuntu"
-  package "libcurl4-openssl-dev"
   include_recipe "runit"
   
   if node[:kernel][:machine] == "x86_64"
@@ -17,7 +16,6 @@ when "centos","redhat"
   %w{openssl openssl-devel}.each do |openssl|
     package openssl
   end
-  include_recipe "libcurl::source" ## install curl from source to meet couchdb version requirement
   package = "rpm"
   build = node[:kernel][:machine]
 end

@@ -1,5 +1,5 @@
 
-# generally only intended for use on centos and redhat to meet the couchdb version requirement
+# generally only intended for use on centos and redhat to run js tests
 
 bash "install libcurl" do
   user "root"
