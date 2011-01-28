@@ -1,5 +1,5 @@
-maintainer        "Cloudant - Joe Williams"
-maintainer_email  "joe@cloudant.com"
+maintainer        "Cloudant"
+maintainer_email  "support@cloudant.com"
 license           "Apache 2.0"
 description       "Configures libicu"
 version           "0.1"
