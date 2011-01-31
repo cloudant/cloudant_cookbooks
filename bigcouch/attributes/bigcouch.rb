@@ -34,4 +34,4 @@ set[:bigcouch][:erlang][:cookie] = "somecookie"
 # attribs for releases
 
 set[:bigcouch][:version] = "0.3-1"
-set[:bigcouch][:repo_url] = "http://cloud.github.com/downloads/cloudant/bigcouch/"
+set[:bigcouch][:repo_url] = "http://cloud.github.com/downloads/cloudant/bigcouch"
