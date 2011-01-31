@@ -22,6 +22,7 @@ include_recipe "spidermonkey"
 
 case node[:platform]
 when "ubuntu"
+  
   include_recipe "runit"
   
   if node[:kernel][:machine] == "x86_64"
@@ -31,18 +32,23 @@ when "ubuntu"
   end
   
   package = "deb"
+  filename = "bigcouch_#{node[:bigcouch][:version]}_#{build}.#{package}"
+  
 when "centos","redhat"
+  
   %w{openssl openssl-devel}.each do |openssl|
     package openssl
   end
   package = "rpm"
   build = node[:kernel][:machine]
+  filename = "bigcouch-#{node[:bigcouch][:version]}_#{build}.#{package}"
+  
 end
   
-bigcouch_pkg_path = File.join(Chef::Config[:file_cache_path], "/", "bigcouch_#{node[:bigcouch][:version]}_#{build}.#{package}")
+bigcouch_pkg_path = File.join(Chef::Config[:file_cache_path], "/", filename)
 
 remote_file(bigcouch_pkg_path) do
-  source "#{node[:bigcouch][:repo_url]}/bigcouch_#{node[:bigcouch][:version]}_#{build}.#{package}"
+  source "#{node[:bigcouch][:repo_url]}/#{filename}"
   not_if "/usr/bin/test -d /opt/bigcouch"
 end
 
