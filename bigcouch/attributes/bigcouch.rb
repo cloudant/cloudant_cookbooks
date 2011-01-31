@@ -26,6 +26,8 @@ set[:bigcouch][:cluster][:n] = 3
 set[:bigcouch][:database_dir] = "/srv/db"
 set[:bigcouch][:view_index_dir] = "/srv/view_index"
 
+set[:bigcouch][:bind_address] = "0.0.0.0"
+
 # attribs for user
 set[:bigcouch][:erlang][:cookie] = "somecookie"
 
