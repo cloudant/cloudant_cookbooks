@@ -80,13 +80,6 @@ directory node[:bigcouch][:view_index_dir] do
   mode "0755"
 end
 
-template "/home/bigcouch/.erlang.cookie" do
-  source "erlang_cookie.erb"
-  mode 0400
-  owner "bigcouch"
-  group "bigcouch"
-end
- 
 template "/opt/bigcouch/etc/default.ini" do
   source "default_ini.erb"
   owner "bigcouch"
