@@ -28,8 +28,9 @@ set[:bigcouch][:view_index_dir] = "/srv/view_index"
 
 set[:bigcouch][:bind_address] = "0.0.0.0"
 
-# attribs for user
+# attribs for erlang
 set[:bigcouch][:erlang][:cookie] = "somecookie"
+set[:bigcouch][:erlang][:node_name] = "bigcouch"
 
 # attribs for releases
 
