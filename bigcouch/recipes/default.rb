@@ -69,15 +69,19 @@ when "centos","redhat"
 end
 
 directory node[:bigcouch][:database_dir] do
+  action :create
   owner "bigcouch"
   group "bigcouch"
   mode "0755"
+  recursive true
 end
- 
+
 directory node[:bigcouch][:view_index_dir] do
+  action :create
   owner "bigcouch"
   group "bigcouch"
   mode "0755"
+  recursive true
 end
 
 template "/opt/bigcouch/etc/default.ini" do
